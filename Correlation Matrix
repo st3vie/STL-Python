@@ -1,0 +1,28 @@
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcol
+
+# Load data
+file = r'C:\Users\Stevie\Documents\700\Dataset.xlsx'
+sheet = 'Full Dataset'
+features = 18
+data = pd.read_excel(file, sheet_name=sheet)
+
+
+#Input All Variables
+x = data.iloc[:,1:19]  # input: 15 features
+
+#Change Method As Required
+method = 'pearson'
+corrmat2 = x.corrwith(x,0,False,method)
+
+
+cmap = mcol.LinearSegmentedColormap.from_list("n",['#ff0000','#dd4d4d','#ffa4a4','#ffc4c4','#ffe2e2','#ffffff','#ffffff','#ffe2e2','#ffc4c4','#ffa4a4','#dd4d4d','#ff0000'])
+
+plt.figure(figsize=(18,18))
+
+# Plot
+g=sns.heatmap(x[corrmat2.index].corr(method=method),vmin=-1,vmax=1,annot=True,cmap=cmap)
+plt.show()

@@ -1,0 +1,25 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.feature_selection import f_regression, mutual_info_regression
+
+
+X = np.random.rand(1000, 3)
+#Y will have a broad linear trend with X[0], a sinusoidal trend with X[1] and no relation to X[2]
+y = X[:, 0] + np.sin(3 * np.pi * X[:, 1]) + 0.1 * np.random.randn(1000)
+
+#F Regression
+f_test, _ = f_regression(X, y)
+f_test /= np.max(f_test)
+
+#Mutual Info Regression
+mi = mutual_info_regression(X, y)
+mi /= np.max(mi)
+
+
+#Plot
+plt.figure(figsize=(10, 15))
+for i in range(3):
+    plt.subplot(3, 1, i + 1)
+    plt.scatter(X[:, i], y, edgecolor='purple', s=10)
+    plt.title("F-regression={:.2f}, MI regression={:.2f}".format(f_test[i], mi[i]),fontsize=16)
+plt.show()

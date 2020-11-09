@@ -1,0 +1,42 @@
+import stl
+from stl import mesh
+from mpl_toolkits import mplot3d
+from matplotlib import pyplot
+import math
+
+
+#Input STL File
+#file = 'SpecificOrientation.stl'
+file = 'C:\Users\Stevie\Documents\700\Pawn.stl'
+
+#Rotation Amount - Degrees
+rotate = [90,0,0]
+
+rx = rotate[0]
+ry = rotate[1]
+rz = rotate[2]
+
+#Open Mesh
+your_mesh = mesh.Mesh.from_file(file)
+
+#Rotation
+your_mesh.rotate([1.0, 0.0, 0.0], math.radians(rx))
+your_mesh.rotate([0.0, 1.0, 0.0], math.radians(ry))
+your_mesh.rotate([0.0, 0.0, 1.0], math.radians(rz))
+
+#Overwrite in new rotation
+your_mesh.save(file)
+
+
+#Plot the STL Model
+figure = pyplot.figure()
+axes = mplot3d.Axes3D(figure)
+
+#Add Mesh to Plot
+your_mesh = mesh.Mesh.from_file(file)
+axes.add_collection3d(mplot3d.art3d.Poly3DCollection(your_mesh.vectors))
+
+#Scale
+scale = your_mesh.points.flatten('A')
+axes.auto_scale_xyz(scale, scale, scale)
+pyplot.show()
